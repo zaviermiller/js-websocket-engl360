@@ -23,7 +23,7 @@
         <span id="numLikes">0</span><span> likes</span>
       </div>
       <div class="tweet__footer__actions">
-        <button class="tweet__footer__actions__like" onclick="likeTweet()">Like</button>
+        <button class="tweet__footer__actions__like" onclick="likeTweetWs()">Like</button>
       </div>
     </div>
   <script>
@@ -53,7 +53,23 @@
       })
     }
 
-    getLikes()
+    let ws;
+
+    const createWebSocket = () => {
+      ws = new WebSocket('ws://localhost:3000/liveLikes')
+      ws.onmessage = ({ data }) => {
+        document.getElementById('numLikes').innerHTML = data
+      }
+    }
+
+    const likeTweetWs = () => {
+      ws.send(JSON.stringify({
+        type: 'like'
+      }))
+    }
+
+    // getLikes()
+    createWebSocket()
   </script>
   <style>
     /* style the tweet */
