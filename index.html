@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zwitter</title>
+</head>
+<body>
+  <!-- show a tweet -->
+  <div class="tweet">
+    <div class="tweet__header">
+      <div class="tweet__header__name">
+        <h3>John Doe</h3>
+        <p>@johndoe</p>
+      </div>
+    </div>
+    <div class="tweet__body">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.</p>
+    </div>
+    <div class="tweet__footer">
+      <div class="tweet__footer__likes">
+        <span id="numLikes">0</span><span> likes</span>
+      </div>
+      <div class="tweet__footer__actions">
+        <button class="tweet__footer__actions__like" onclick="likeTweet()">Like</button>
+      </div>
+    </div>
+  <script>
+    const getLikes= () => {
+      const response = fetch('http://localhost:3000/likes').then((response) => {
+        return response.json()
+      }).then((data) => {
+        document.getElementById('numLikes').innerHTML = data.numLikes
+      })
+    }
+
+    const likeTweet = () => {
+      const response = fetch('http://localhost:3000/like', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      }).then((response) => {
+        return response.json()
+      }).then((data) => {
+        document.getElementById('numLikes').innerHTML = data.numLikes
+        const likeButton = document.querySelector('.tweet__footer__actions__like')
+        likeButton.innerHTML = 'Liked'
+        likeButton.disabled = true
+        likeButton.removeEventListener('click', likeTweet)
+
+      })
+    }
+
+    getLikes()
+  </script>
+  <style>
+    /* style the tweet */
+    .tweet {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+    }
+  </style>
+</body>
+</html>
