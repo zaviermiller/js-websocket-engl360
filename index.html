@@ -27,11 +27,22 @@
       </div>
     </div>
   <script>
+    function updateLikeCount(numLikes) {
+      document.getElementById('numLikes').innerHTML = numLikes
+    }
+
+    function disableLikeButton() {
+      const likeButton = document.querySelector('.tweet__footer__actions__like')
+      likeButton.innerHTML = 'Liked'
+      likeButton.disabled = true
+      likeButton.removeEventListener('click', likeTweet)
+    }
+
     const getLikes= () => {
       const response = fetch('http://localhost:3000/likes').then((response) => {
         return response.json()
       }).then((data) => {
-        document.getElementById('numLikes').innerHTML = data.numLikes
+        updateLikeCount(data.numLikes)
       })
     }
 
@@ -44,12 +55,8 @@
       }).then((response) => {
         return response.json()
       }).then((data) => {
-        document.getElementById('numLikes').innerHTML = data.numLikes
-        const likeButton = document.querySelector('.tweet__footer__actions__like')
-        likeButton.innerHTML = 'Liked'
-        likeButton.disabled = true
-        likeButton.removeEventListener('click', likeTweet)
-
+        updateLikeCount(data.numLikes)
+        disableLikeButton()
       })
     }
 
@@ -58,7 +65,7 @@
     const createWebSocket = () => {
       ws = new WebSocket('ws://localhost:3000/liveLikes')
       ws.onmessage = ({ data }) => {
-        document.getElementById('numLikes').innerHTML = data
+        updateLikeCount(data)
       }
     }
 
@@ -66,6 +73,7 @@
       ws.send(JSON.stringify({
         type: 'like'
       }))
+      disableLikeButton()
     }
 
     // getLikes()
