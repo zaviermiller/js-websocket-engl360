@@ -14,10 +14,17 @@ To get started, I have built a sample Twitter-like application that communicates
 
 This is a very small web application to highlight the power of WebSockets, so it is not very complicated. Let’s take a quick look at how it works.
 
+![Image of the "Twitter clone"](appImg.png)
+
 As you can see, we have one “tweet” and a like count that persists. I can like the tweet each time I load the page by clicking the “Like” button.
 
+![Can like the "Tweet"](liking.png)
+
 But what happens if I have two instances of the app loaded and I like the tweet?
-It looks like I can see the updated like count on the page I clicked the button on, but it doesn’t get updated on the other page.
+
+![It doesn't update in real time](notrealtime.png)
+
+It looks like I can see the updated like count on the page I clicked the button on, but it doesn’t get updated on the other page. I can refresh the page to see the updated count, but that's not a very good user experience.
 
 Let’s go ahead and fix this using WebSockets.
 
@@ -143,7 +150,3 @@ Ok, looks like that is still working. Now for the moment of truth. Does the coun
 Sweet! We now have a real time like count, much like you would see on popular social media sites like Twitter and Instagram
 
 ## Conclusion
-
-As you can see, when I “like” another user's post, the count gets updated on my end but remains unchanged on the other user's end until I refresh the page.
-Conclusion
-Show some performance stats, and images of
