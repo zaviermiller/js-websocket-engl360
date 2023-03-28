@@ -21,7 +21,7 @@ It looks like I can see the updated like count on the page I clicked the button 
 
 Let’s go ahead and fix this using WebSockets.
 
-### Getting Started
+### Adding WebSocket Support to Our Server
 
 To build out this functionality, we're going to use a library built for JavaScript called `ws`. You can install it by running the following in the project directory using a terminal:
 
@@ -78,11 +78,71 @@ Whenever a 'message' is received from an existing connection, we want to increas
 
 That's about it for creating the WebSocket handler! Now we just need to use it with our server.
 
-In `index.js` add the following line before the `server.listen` line:
+In `index.js` add the following line before the `server.listen...` line but after the `const server = ...` line:
 
 ```js
+// index.js
 require('./websockets')(server);
 ```
+
+Now we should be able to handle WebSockets on the server! Let's go ahead and implement this on the client side so we can test it.
+
+### Using WebSockets in HTML
+
+In order to take advantage of the new WebSocket functionality, we need to update the `index.html` file as well.
+
+First, we need to create some new functions in the body of the `<script>` tag on line 29:
+
+```js
+// index.html
+
+let ws;
+
+const createWebSocket = () => {
+  ws = new WebSocket('ws://localhost:3000/liveLikes');
+  ws.onmessage = ({ data }) => {
+    updateLikeCount(data);
+  };
+};
+
+const likeTweetWs = () => {
+  ws.send(
+    JSON.stringify({
+      type: 'like',
+    })
+  );
+  disableLikeButton();
+};
+
+// getLikes()
+createWebSocket();
+```
+
+First, we defined a new variable called `ws` to store our WebSocket connection.
+
+The first function we wrote is called `createWebSocket`. This function is response for creating the WebSocket connection, and defining what should happen when the client receives a message. In our case, we want to update the like count with the message data.
+
+The other function is called `likeTweetWs`, which will use the WebSocket connection to send some data to the server to effectively update the number of likes. We also want to disable the like button after they like the tweet so that they can't spam the button and inflate the likes.
+
+Finally, notice that I commented out the `getLikes` function and called the `createWebSocket`. Since we are now using WebSockets, we don't need to get likes the old way.
+
+There is now only one thing left to do before we can see our likes update in real time! We need to change the `onclick` event of the like button on line 26. It is currently using the old `likeTweet()` function, but we need to change it to use `likeTweetWs()` so that it will update using the WebSocket connection.
+
+And that's it! Let's go ahead and test the new functionality.
+
+### The Moment of Truth
+
+First, let's open a single page and ensure that we can still like a tweet.
+
+![The original functionality still works!](stillworks.png)
+
+Ok, looks like that is still working. Now for the moment of truth. Does the count automatically update on other instances of the app?
+
+![It works!](works!.png)
+
+Sweet! We now have a real time like count, much like you would see on popular social media sites like Twitter and Instagram
+
+## Conclusion
 
 As you can see, when I “like” another user's post, the count gets updated on my end but remains unchanged on the other user's end until I refresh the page.
 Conclusion
