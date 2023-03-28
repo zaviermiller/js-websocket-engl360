@@ -15,6 +15,8 @@ app.use(
 
 require('./routes')(app);
 
+require('./websockets')(server);
+
 server.listen(port, () => {
   console.log(`App running on port ${port}.`);
 });
