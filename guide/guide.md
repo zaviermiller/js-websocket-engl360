@@ -10,7 +10,7 @@ This is crucial to real-time applications, like the aforementioned social media 
 
 ## Guide
 
-To get started, I have built a sample Twitter-like application that communicates with a server to show users the likes a specific “tweet” has. Building an entire application from scratch is a bit out of the scope of this guide since the focus is on implementing WebSockets to add real-time functionality to the application. You can find the source code for the starting point here [link to repo]. To implement the backend I am using ExpressJS, a commonly used library for building web servers.
+To get started, I have built a sample Twitter-like application that communicates with a server to show users the likes a specific “tweet” has. Building an entire application from scratch is a bit out of the scope of this guide since the focus is on implementing WebSockets to add real-time functionality to the application. You can find the source code for the starting point [here](https://github.com/zaviermiller/js-websocket-engl360/tree/main). To implement the backend I am using ExpressJS, a commonly used library for building web servers.
 
 This is a very small web application to highlight the power of WebSockets, so it is not very complicated. Let’s take a quick look at how it works.
 
@@ -107,7 +107,8 @@ let ws;
 
 const createWebSocket = () => {
   ws = new WebSocket('ws://localhost:3000/liveLikes');
-  ws.onmessage = ({ data }) => {
+  //github.com/zaviermiller/js-websocket-engl360/tree/websockets
+  https: ws.onmessage = ({ data }) => {
     updateLikeCount(data);
   };
 };
@@ -150,3 +151,11 @@ Ok, looks like that is still working. Now for the moment of truth. Does the coun
 Sweet! We now have a real time like count, much like you would see on popular social media sites like Twitter and Instagram
 
 ## Conclusion
+
+In this guide, we explored how social media websites and other real-time applications use WebSockets to provide users with up-to-date data without the need for constant page refreshing. We demonstrated the use of WebSockets in a small Twitter-like application, where we added real-time functionality to the like count feature.
+
+By implementing a WebSocket server and client, we were able to create a bi-directional communication channel that allowed the server to send data to clients at any time. We used the `ws` library to create the WebSocket server and client, and demonstrated how to handle WebSocket events like connection and message.
+
+I hope that this guide has helped you understand the basics of using WebSockets in your web applications. With this knowledge, you can build more interactive and engaging applications that provide users with real-time updates and enhance their overall experience.
+
+Thanks for reading, and good luck with your future real-time endeavors!
